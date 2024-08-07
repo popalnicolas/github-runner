@@ -8,4 +8,4 @@ REGISTRATION_TOKEN="$(curl -X POST -fsSL \
   "$REGISTRATION_TOKEN_API_URL" \
   | jq -r '.token')"
 
-./config.sh --url $GITHUB_URL --token $REGISTRATION_TOKEN --name $RUNNER_NAME --labels $RUNNER_LABELS --unattended --ephemeral && ./run.sh
+./config.sh --url $GITHUB_URL --token $REGISTRATION_TOKEN --labels $RUNNER_LABELS --unattended --ephemeral && ./run.sh
