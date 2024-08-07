@@ -1,11 +1,15 @@
-FROM ubuntu:24.04 as base
-RUN \
-apt-get update -y && \
-apt-get install build-essential -y && \
-apt-get install curl -y && \
-apt-get install dotnet-sdk-8.0 -y && \
-apt-get install tar && \
-DEBIAN_FRONTEND=noninteractive apt-get install git -y
-RUN git clone https://github.com/popalnicolas/github-runner.git
-RUN chmod +x /github-runner/entrypoint.sh
-ENTRYPOINT /github-runner/entrypoint.sh
+FROM ghcr.io/actions/actions-runner:2.318.0
+# for latest release, see https://github.com/actions/runner/releases
+
+USER root
+
+# install curl and jq
+RUN apt-get update && apt-get install -y curl jq && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN chmod +x ./entrypoint.sh
+
+USER runner
+
+ENTRYPOINT ["./entrypoint.sh"]
